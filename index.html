@@ -8,22 +8,22 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="./css/style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--<script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5a4150449d192f00137434aa&product=inline-share-buttons"></script>
+-->
 </head>
 
 <body style="font-family:Verdana;color:#aaaaaa;">
-
-  <div style="background-color:#e5e5e5;padding:5px;text-align:center;">
+  <div style="background-color:#a9e5e3;padding:5px;text-align:center;">
     <h2>  <a class="navbar-brand" href="index.html">Alpha</a></h2>
   </div>
 
   <div style="overflow:auto">
     <div class="menu">
-      <div class="menuitem"><button class="btn btn-info btn-lg" onclick="start_game()">Start Game</button></div>
-      <div class="menuitem"><button class="btn btn-default btn-lg" onclick="reset_game()">Reset Game</button></div>
+      <div class="inline"><button class="btn btn-success" onclick="start_game()">Start Game</button></div>
+      <div class="inline"><button class="btn btn-primary" onclick="reset_game()">Reset Game</button></div>
     </div>
 
     <div class="main">
-      <h2></h2>
       <h1><time>00:00</time></h1>
       <div id="board">
       </div>
@@ -31,106 +31,31 @@
   </div>
 
   <div class="right">
-    <h2>How to play</h2>
-    <p>Click on the alphabets in order. See how fast you can finish it up. </br>According to a research: </br>less than 30 seconds = You're a genius </br> 30-40 seconds = You're smart and you come in top 2% population</br> 40-50 seconds = You're pretty smart.
-      Well above average</br>
-      50-60 seconds = You're quick but not as much as a hare </br>60-80 seconds = You're average. </br>greater than 80 = Below average.
-    </p>
+    <button class="btn btn-info" onclick="renderIt()">How to play?</button>
+    <p id="para"></p>
   </div>
   </div>
+  <div class="sharethis-inline-share-buttons"></div>
 
-  <div style="background-color:#e5e5e5;text-align:center;padding:10px;margin-top:7px;"><a href="index.html">Home</a> ·
-    <a href="about.html">About</a> ·
+  <div style="background-color:#a9e5e3;text-align:center;padding:10px;margin-top:7px;"><a href="index.html">Home</a> ·
     <a href="https://www.facebook.com/sanjay.khadda" target="_blank">Contact Me</a></div>
 
 </body>
 
-
-<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+<!--Toggle the how to button-->
 <script>
-  var h1 = document.getElementsByTagName('h1')[0],
-    seconds = 0,
-    minutes = 0,
-    t;
-
-  function add() {
-    seconds++;
-    if (seconds >= 60) {
-      seconds = 0;
-      minutes++;
+  function renderIt() {
+    el = document.getElementById("para");
+    if (el.innerHTML == "") {
+      el.innerHTML =
+        "Click on the alphabets in order. See how fast you can finish it up. </br> </br>According to a research: </br ></br>less than 30 seconds = You're a genius </br ></br>30-40 seconds = You're smart and you come in top 2% population</br ></br> 40-50 seconds = You're pretty smart. Well above average</br ></br>50 - 60 seconds = You 're quick but not as much as a hare </br></br>60-80 seconds = You're average. </br ></br>greater than 80 = Below average.";
+    } else {
+      el.innerHTML = "";
     }
-    h1.textContent = (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
-    timer();
-  }
-
-  function timer() {
-    t = setTimeout(add, 1000);
-  }
-
-  function reset_game() {
-    clearTimeout(t);
-    h1.textContent = "00:00";
-    seconds = 0;
-    minutes = 0;
-  }
-
-  function start_game() {
-    h1.textContent = "00:00";
-    seconds = 0;
-    minutes = 0;
-    timer();
-    var alphs = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-    var sorted = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-    alphs.sort(() => Math.random() * 2 - 1);
-    if (alphs[25] == 'A') {
-      var temp = alphs[0];
-      alphs[0] = 'A';
-      alphs[25] = temp;
-    }
-    var grid = document.getElementById('board').innerHTML = "";
-    var grid = document.getElementById('board').appendChild(document.createElement('table'));
-    grid.id = 'grid';
-
-    var cell = [];
-
-    var index = 0;
-    var r;
-    var c;
-    for (r = 0; r < 5; ++r) {
-      var tr = grid.appendChild(document.createElement('tr'));
-      for (c = 0; c < 5; ++c) {
-        cell[r * 5 + c] = tr.appendChild(document.createElement('td'));
-        cell[r * 5 + c].innerHTML = alphs[(r) * 5 + c];
-      }
-    }
-    $("#grid td").click(function() {
-      if (index < 25) {
-        var column_num = parseInt($(this).index());
-        var row_num = parseInt($(this).parent().index());
-        if (alphs[row_num * 5 + column_num] == sorted[index]) {
-          alphs.splice(row_num * 5 + column_num, 1);
-          alphs.sort(() => Math.random() * 2 - 1);
-          for (var a = 0; a < 5; ++a) {
-            for (var b = 0; b < 5; ++b) {
-              cell[a * 5 + b].innerHTML = '';
-            }
-          }
-          for (var r = 0; r < 5; ++r) {
-            for (var c = 0; c < 5; ++c) {
-              cell[r * 5 + c].innerHTML = '';
-              if (alphs[(r) * 5 + c] != undefined)
-                cell[r * 5 + c].innerHTML = alphs[(r) * 5 + c];
-            }
-          }
-          index++;
-        }
-      } else if (index == 25) {
-        grid.innerHTML = "<h1>You did it!</br>Share this game with your friends and see if you scored better than them!</h1>";
-        clearTimeout(t);
-      }
-    });
-
   }
 </script>
 
+
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="./js/logic.js"></script>
 </body </html>

@@ -1,5 +1,6 @@
 .btn{
-  margin-top: 3px;
+  margin-top: 15px;
+  margin-left: 5px;
   margin-bottom: 1px;
 }
 .dropdown-backdrop {
@@ -14,6 +15,7 @@ navbar style
   padding: 5px;
   text-align: center;
   width: 100%;
+  font-size: 30px;
 }
 
 
@@ -59,4 +61,8 @@ a:hover {
 }
 @-ms-viewport{
   width: device-width;
+}
+
+div.inline {
+  float:right;
 }
