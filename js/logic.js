@@ -18,13 +18,18 @@ function timer() {
 }
 
 function reset_game() {
+
   clearTimeout(t);
+  t = undefined;
   h1.textContent = "00:00";
   seconds = 0;
   minutes = 0;
 }
 
 function start_game() {
+
+  clearTimeout(t);
+  t = undefined;
   h1.textContent = "00:00";
   seconds = 0;
   minutes = 0;
@@ -34,11 +39,15 @@ function start_game() {
 
   var sorted = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
   alphs.sort(() => Math.random() * 2 - 1);
+
+  //Keep A in the initial 25 letters
   if (alphs[25] == 'A') {
     var temp = alphs[0];
     alphs[0] = 'A';
     alphs[25] = temp;
   }
+
+
   var grid = document.getElementById('board').innerHTML = "";
   var grid = document.getElementById('board').appendChild(document.createElement('table'));
   grid.id = 'grid';
@@ -55,6 +64,8 @@ function start_game() {
       cell[r * 5 + c].innerHTML = alphs[(r) * 5 + c];
     }
   }
+
+
   $("#grid td").click(function() {
     if (index < 25) {
       var column_num = parseInt($(this).index());
@@ -70,7 +81,9 @@ function start_game() {
         for (var r = 0; r < 5; ++r) {
           for (var c = 0; c < 5; ++c) {
             cell[r * 5 + c].innerHTML = '';
-            if (alphs[(r) * 5 + c] != undefined)
+            if (alphs[(r) * 5 + c] == undefined)
+              cell[r * 5 + c].innerHTML = " ";
+            else
               cell[r * 5 + c].innerHTML = alphs[(r) * 5 + c];
           }
         }
@@ -79,6 +92,7 @@ function start_game() {
     } else if (index == 25) {
       grid.innerHTML = "<h1>You did it!</br>Share this game with your friends and see if you scored better than them!</h1>";
       clearTimeout(t);
+      t = undefined;
     }
   });
 
